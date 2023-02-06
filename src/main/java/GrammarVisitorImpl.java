@@ -223,7 +223,11 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitRpDescendant(final GrammarParser.RpDescendantContext ctx) {
-        return visitChildren(ctx);
+        visit(ctx.rp(0));
+        curNodeList.addAll(getAllDescendantFromCurNode());
+        curNodeList = visit(ctx.rp(1));
+
+        return unique(curNodeList);
     }
 
     /**
@@ -234,7 +238,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitRpParentheses(final GrammarParser.RpParenthesesContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.rp());
     }
 
     /**
@@ -245,7 +249,18 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitText(final GrammarParser.TextContext ctx) {
-        return visitChildren(ctx);
+        final List<Node> ans = new ArrayList<>();
+        for (final Node node : curNodeList) {
+            final NodeList childNodeList = node.getChildNodes();
+
+            for (int i = 0; i < childNodeList.getLength(); i++) {
+                if (childNodeList.item(i).getNodeType() == Node.TEXT_NODE)
+                    ans.add(childNodeList.item(i));
+            }
+        }
+        curNodeList = ans;
+
+        return curNodeList;
     }
 
     /**
@@ -256,7 +271,14 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitRpAppend(final GrammarParser.RpAppendContext ctx) {
-        return visitChildren(ctx);
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> result0 = visit(ctx.rp(0));
+        curNodeList = initialCurNodeList;
+        List<Node> result1 = visit(ctx.rp(1));
+        result1.addAll(result0);
+        result1 = unique(result1);
+        curNodeList = result1;
+        return curNodeList;
     }
 
     /**
