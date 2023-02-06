@@ -93,7 +93,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         curNodeList = ans;
 
 
-        return ans;
+        return curNodeList;
     }
 
     /**
@@ -137,7 +137,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
                         .forEach(ans::add));
         curNodeList = ans;
 
-        return ans;
+        return curNodeList;
     }
 
     /**
@@ -148,10 +148,9 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitParent(final GrammarParser.ParentContext ctx) {
-        final List<Node> result = getParentsFromCurNode();
-        curNodeList = result;
+        curNodeList = getParentsFromCurNode();
 
-        return result;
+        return curNodeList;
     }
 
     private List<Node> getParentsFromCurNode() {
@@ -179,7 +178,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         }
         curNodeList = ans;
 
-        return ans;
+        return curNodeList;
     }
 
     /**
@@ -199,7 +198,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
             }
         }
         curNodeList = result;
-        return result;
+        return curNodeList;
     }
 
     /**
@@ -210,7 +209,10 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitRpChildren(final GrammarParser.RpChildrenContext ctx) {
-        return visitChildren(ctx);
+        visit(ctx.rp(0));
+        curNodeList = visit(ctx.rp(1));
+
+        return curNodeList;
     }
 
     /**
