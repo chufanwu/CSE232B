@@ -1,147 +1,259 @@
+import edu.ucsd.cse232b.parsers.GrammarBaseVisitor;
 import edu.ucsd.cse232b.parsers.GrammarParser;
-import edu.ucsd.cse232b.parsers.GrammarVisitor;
-import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.w3c.dom.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class GrammarVisitorImpl implements GrammarVisitor<List<Node>> {
+public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
+    private final List<Node> curNode = new ArrayList<>();
 
     @Override
     public List<Node> visitApChildren(GrammarParser.ApChildrenContext ctx) {
-        return null;
+        visit(ctx.doc());   // visit the doc the get the absolute path
+        return visit(ctx.rp());
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitApDescendant(GrammarParser.ApDescendantContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitDocFile(GrammarParser.DocFileContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFile(GrammarParser.FileContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitCur(GrammarParser.CurContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitTagName(GrammarParser.TagNameContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitParent(GrammarParser.ParentContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitChilden(GrammarParser.ChildenContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitAtrributeName(GrammarParser.AtrributeNameContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitRpChildren(GrammarParser.RpChildrenContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitRpDescendant(GrammarParser.RpDescendantContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitRpParentheses(GrammarParser.RpParenthesesContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitText(GrammarParser.TextContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitRpAppend(GrammarParser.RpAppendContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitRpFilter(GrammarParser.RpFilterContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterSame(GrammarParser.FilterSameContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterEqual(GrammarParser.FilterEqualContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterNot(GrammarParser.FilterNotContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterOr(GrammarParser.FilterOrContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterAnd(GrammarParser.FilterAndContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterRp(GrammarParser.FilterRpContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterParentheses(GrammarParser.FilterParenthesesContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
     @Override
     public List<Node> visitFilterString(GrammarParser.FilterStringContext ctx) {
-        return null;
+        return visitChildren(ctx);
     }
 
-    @Override
-    public List<Node> visit(ParseTree parseTree) {
-        return null;
-    }
-
-    @Override
-    public List<Node> visitChildren(RuleNode ruleNode) {
-        return null;
-    }
-
-    @Override
-    public List<Node> visitTerminal(TerminalNode terminalNode) {
-        return null;
-    }
-
-    @Override
-    public List<Node> visitErrorNode(ErrorNode errorNode) {
-        return null;
-    }
 }

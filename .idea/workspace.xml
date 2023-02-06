@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="add grammar rules">
-      <change afterPath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" afterDir="false" />
+    <list default="true" id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="add visitor impl">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +39,8 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/Max/Documents/projects/CSE232B",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
@@ -61,7 +63,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1675707837307</updated>
-      <workItem from="1675719947833" duration="115000" />
+      <workItem from="1675719947833" duration="1117000" />
     </task>
     <task id="LOCAL-00001" summary="add grammar rules">
       <created>1675712950004</created>
@@ -77,7 +79,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675712957714</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add visitor impl">
+      <created>1675720088659</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1675720088659</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -96,6 +105,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add grammar rules" />
-    <option name="LAST_COMMIT_MESSAGE" value="add grammar rules" />
+    <MESSAGE value="add visitor impl" />
+    <option name="LAST_COMMIT_MESSAGE" value="add visitor impl" />
   </component>
 </project>
