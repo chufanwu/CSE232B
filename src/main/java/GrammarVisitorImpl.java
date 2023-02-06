@@ -1,12 +1,13 @@
 import edu.ucsd.cse232b.parsers.GrammarBaseVisitor;
 import edu.ucsd.cse232b.parsers.GrammarParser;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
-    private final List<Node> curNode = new ArrayList<>();
+    private List<Node> curNodeList = new ArrayList<>();
 
     @Override
     public List<Node> visitApChildren(GrammarParser.ApChildrenContext ctx) {
@@ -22,8 +23,37 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitApDescendant(GrammarParser.ApDescendantContext ctx) {
-        return visitChildren(ctx);
+        visit(ctx.doc());
+        curNodeList.addAll(getAllDescendantFromCurNode());
+
+        return visit(ctx.rp());
     }
+
+    private List<Node> getAllDescendantFromCurNode() {
+        final List<Node> ans = new ArrayList<>();
+        final Queue<Node> queue = new LinkedList<>(curNodeList);
+        while (!queue.isEmpty()) {
+            final int queueSize = queue.size();
+            for (int i = 0; i < queueSize; i++) {
+                final Node node = queue.remove();
+                // find children for the node
+                final NodeList childNodes = node.getChildNodes();
+                for (int j = 0; j < childNodes.getLength(); j++) {
+                    final Node childNode = childNodes.item(j);
+                    ans.add(childNode);
+                    queue.add(childNode);
+                }
+            }
+        }
+
+        return unique(ans);
+    }
+
+
+    private List<Node> unique(List<Node> nodeList) {
+        return new ArrayList<>(new HashSet<>(nodeList));
+    }
+
 
     /**
      * {@inheritDoc}
@@ -55,7 +85,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitCur(GrammarParser.CurContext ctx) {
-        return visitChildren(ctx);
+        return new ArrayList<>(curNodeList);
     }
 
     /**
@@ -66,7 +96,18 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitTagName(GrammarParser.TagNameContext ctx) {
-        return visitChildren(ctx);
+        final String tagName = ctx.ID().getText();
+        final List<Node> ans = new ArrayList<>();
+
+        // find the text node with name tagName
+        curNodeList.stream().map(Node::getChildNodes)
+                .forEach(nodeList -> IntStream.range(0, nodeList.getLength())
+                        .mapToObj(nodeList::item)
+                        .filter(childNode -> (childNode.getNodeType() == Node.ELEMENT_NODE) && tagName.equals(childNode.getNodeName()))
+                        .forEach(ans::add));
+        curNodeList = ans;
+
+        return ans;
     }
 
     /**
