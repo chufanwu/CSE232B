@@ -21,7 +21,7 @@ public class GrammarParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, T__19=20, T__20=21, ID=22, WS=23;
+		T__17=18, T__18=19, T__19=20, T__20=21, ID=22, WS=23, StringConstant=24;
 	public static final int
 		RULE_ap = 0, RULE_doc = 1, RULE_fileName = 2, RULE_rp = 3, RULE_filter = 4;
 	private static String[] makeRuleNames() {
@@ -42,7 +42,8 @@ public class GrammarParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, null, "ID", "WS"
+			null, null, null, null, null, null, null, null, null, null, "ID", "WS", 
+			"StringConstant"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -902,7 +903,7 @@ public class GrammarParser extends Parser {
 		public RpContext rp() {
 			return getRuleContext(RpContext.class,0);
 		}
-		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
+		public TerminalNode StringConstant() { return getToken(GrammarParser.StringConstant, 0); }
 		public FilterStringContext(FilterContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1009,7 +1010,7 @@ public class GrammarParser extends Parser {
 				setState(84);
 				match(T__14);
 				setState(85);
-				match(ID);
+				match(StringConstant);
 				}
 				break;
 			case 7:
@@ -1126,7 +1127,7 @@ public class GrammarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0017k\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0018k\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0001"+
 		"\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
 		"\u0000\u0001\u0000\u0003\u0000\u0013\b\u0000\u0001\u0001\u0001\u0001\u0001"+
@@ -1181,7 +1182,7 @@ public class GrammarParser extends Parser {
 		"\u0000\u0000MN\u0003\u0006\u0003\u0000N^\u0001\u0000\u0000\u0000OP\u0003"+
 		"\u0006\u0003\u0000PQ\u0005\u0012\u0000\u0000QR\u0003\u0006\u0003\u0000"+
 		"R^\u0001\u0000\u0000\u0000ST\u0003\u0006\u0003\u0000TU\u0005\u000f\u0000"+
-		"\u0000UV\u0005\u0016\u0000\u0000V^\u0001\u0000\u0000\u0000WX\u0005\n\u0000"+
+		"\u0000UV\u0005\u0018\u0000\u0000V^\u0001\u0000\u0000\u0000WX\u0005\n\u0000"+
 		"\u0000XY\u0003\b\u0004\u0000YZ\u0005\u000b\u0000\u0000Z^\u0001\u0000\u0000"+
 		"\u0000[\\\u0005\u0015\u0000\u0000\\^\u0003\b\u0004\u0001]A\u0001\u0000"+
 		"\u0000\u0000]C\u0001\u0000\u0000\u0000]G\u0001\u0000\u0000\u0000]K\u0001"+
