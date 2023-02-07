@@ -1,6 +1,5 @@
 import edu.ucsd.cse232b.parsers.GrammarLexer;
 import edu.ucsd.cse232b.parsers.GrammarParser;
-import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
