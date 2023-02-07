@@ -461,12 +461,10 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
                 ans.add(node);
             }
 
-            final NodeList childNodeList = node.getChildNodes();
-            for (int i = 0; i < childNodeList.getLength(); i++) {
-                if (childNodeList.item(i).getNodeType() == Node.TEXT_NODE && childNodeList.item(i).getTextContent().equals(strNew))
-                    ans.add(childNodeList.item(i));
-            }
+            if (node.getNodeType() == Node.TEXT_NODE && node.getTextContent().equals(strNew))
+                ans.add(node);
         }
+
         curNodeList = ans;
         return curNodeList;
     }
