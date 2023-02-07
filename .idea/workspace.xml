@@ -9,9 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4a88941-6900-4f93-8ab5-d5bc97994090" name="Changes" comment="deprecated issue fixed">
-      <change afterPath="$PROJECT_DIR$/j_caesar.xml" afterDir="false" />
-    </list>
+    <list default="true" id="c4a88941-6900-4f93-8ab5-d5bc97994090" name="Changes" comment="cater to gradescope" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,7 +65,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1675757833167</updated>
-      <workItem from="1675757834749" duration="1346000" />
+      <workItem from="1675757834749" duration="1613000" />
     </task>
     <task id="LOCAL-00001" summary="deprecated issue fixed">
       <created>1675759445686</created>
@@ -76,7 +74,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675759445686</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="cater to gradescope">
+      <created>1675759626364</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1675759626364</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -95,6 +100,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="deprecated issue fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="deprecated issue fixed" />
+    <MESSAGE value="cater to gradescope" />
+    <option name="LAST_COMMIT_MESSAGE" value="cater to gradescope" />
   </component>
 </project>
