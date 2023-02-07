@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="cse232b_milestone1.jar" />
+      <artifact name="cse232b_milestone1" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
@@ -11,8 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="fix bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CSE232B.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/query/query0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/query/query0.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/query/query1out.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/query/query1out.xml" afterDir="false" />
     </list>
@@ -49,7 +48,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Max/Documents/projects/CSE232B/src/main/resources/query",
+    "last_opened_file_path": "C:/Users/Max/Documents/projects/XQuery-Processor",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -97,7 +96,7 @@
       <updated>1675707837307</updated>
       <workItem from="1675719947833" duration="6733000" />
       <workItem from="1675788389310" duration="369000" />
-      <workItem from="1675788767496" duration="10483000" />
+      <workItem from="1675788767496" duration="11365000" />
     </task>
     <task id="LOCAL-00001" summary="add grammar rules">
       <created>1675712950004</created>
@@ -274,7 +273,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675801846687</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="fix bug">
+      <created>1675802479336</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1675802479336</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

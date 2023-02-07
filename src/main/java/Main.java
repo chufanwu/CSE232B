@@ -34,7 +34,7 @@ public class Main {
 
         final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 
-        final Node ansNode = document.createElement("Result");
+        final Node ansNode = document.createElement("RESULT");
         for (final Node node : ans) {
             ansNode.appendChild(document.importNode(node, true));
         }
