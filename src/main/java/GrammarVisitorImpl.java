@@ -230,10 +230,11 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitRpDescendant(final GrammarParser.RpDescendantContext ctx) {
         visit(ctx.rp(0));
-        curNodeList.addAll(getAllDescendantFromCurNode());
+        final List<Node> nodeList = getAllDescendantFromCurNode();
+        curNodeList.addAll(nodeList);
         curNodeList = visit(ctx.rp(1));
 
-        return unique(curNodeList);
+        return curNodeList;
     }
 
     /**
@@ -368,13 +369,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> nodeList = visit(ctx.filter());
         curNodeList = initialCurNodeList;
-        for (final Node node : curNodeList) {
-            if (nodeList.contains(node)) {
-                curNodeList.remove(node);
-            }
+        if(nodeList.isEmpty()) {
+            // true
+            return curNodeList;
+        } else {
+            return Collections.emptyList();
         }
-
-        return curNodeList;
     }
 
     /**
