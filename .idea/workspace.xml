@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="add string constant">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/j_caesar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/query/query1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/play.dtd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/query/query1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/query/query1.txt" afterDir="false" />
+    </list>
+    <list id="2302ab28-f770-4009-a216-a57db4e0cd3c" name="ack" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/output/xpath_output_0_new.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -178,7 +179,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675756008359</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add string constant">
+      <created>1675756456094</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1675756456094</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,5 +209,21 @@
     <MESSAGE value="impl function" />
     <MESSAGE value="add string constant" />
     <option name="LAST_COMMIT_MESSAGE" value="add string constant" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
