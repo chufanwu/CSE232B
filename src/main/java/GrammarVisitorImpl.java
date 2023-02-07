@@ -60,7 +60,13 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
 
 
     private List<Node> unique(final List<Node> nodeList) {
-        return new ArrayList<>(new HashSet<>(nodeList));
+        final List<Node> ans = new ArrayList<>();
+        for(final Node node: nodeList) {
+            if(!ans.contains(node)) {
+                ans.add(node);
+            }
+        }
+        return ans;
     }
 
 
