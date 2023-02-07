@@ -1,7 +1,10 @@
 import edu.ucsd.cse232b.parsers.GrammarLexer;
 import edu.ucsd.cse232b.parsers.GrammarParser;
-import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -11,7 +14,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -24,9 +26,8 @@ public class Main {
 
         final String queryFile = args[0];
         final String outputFile = args[1];
-        final FileInputStream fileInputStream = new FileInputStream(queryFile);
-        final ANTLRInputStream antlrInputStream = new ANTLRInputStream(fileInputStream);
-        final GrammarLexer grammarLexer = new GrammarLexer(antlrInputStream);
+        final CharStream charStream = CharStreams.fromFileName(queryFile);
+        final GrammarLexer grammarLexer = new GrammarLexer(charStream);
         final CommonTokenStream commonTokenStream = new CommonTokenStream(grammarLexer);
         final GrammarParser grammarParser = new GrammarParser(commonTokenStream);
         final List<Node> ans = new GrammarVisitorImpl().visit(grammarParser.ap());
