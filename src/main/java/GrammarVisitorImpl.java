@@ -189,15 +189,15 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitAtrributeName(final GrammarParser.AtrributeNameContext ctx) {
-        final List<Node> result = new ArrayList<>();
+        final List<Node> ans = new ArrayList<>();
         for (final Node node : curNodeList) {
             final NamedNodeMap namedNodeMap = node.getAttributes();
 
             if (namedNodeMap != null && namedNodeMap.getNamedItem(ctx.ID().getText()) != null) {
-                result.add(node);
+                ans.add(node);
             }
         }
-        curNodeList = result;
+        curNodeList = ans;
         return curNodeList;
     }
 
@@ -272,12 +272,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitRpAppend(final GrammarParser.RpAppendContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
-        final List<Node> result0 = visit(ctx.rp(0));
+        final List<Node> ans0 = visit(ctx.rp(0));
         curNodeList = initialCurNodeList;
-        List<Node> result1 = visit(ctx.rp(1));
-        result1.addAll(result0);
-        result1 = unique(result1);
-        curNodeList = result1;
+        List<Node> ans1 = visit(ctx.rp(1));
+        ans1.addAll(ans0);
+        ans1 = unique(ans1);
+        curNodeList = ans1;
         return curNodeList;
     }
 
@@ -311,18 +311,18 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterSame(final GrammarParser.FilterSameContext ctx) {
-        final List<Node> result = new ArrayList<>();
+        final List<Node> ans = new ArrayList<>();
 
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
-        final List<Node> nodes0 = visit(ctx.rp(0));
+        final List<Node> node0List = visit(ctx.rp(0));
         curNodeList = initialCurNodeList;
-        final List<Node> nodes1 = visit(ctx.rp(1));
+        final List<Node> node1List = visit(ctx.rp(1));
 
 
-        nodes0.forEach(node0 -> {
-            nodes1.stream().filter(node0::isSameNode).map(node1 -> node0).forEach(result::add);
+        node0List.forEach(node0 -> {
+            node1List.stream().filter(node0::isSameNode).map(node1 -> node0).forEach(ans::add);
         });
-        curNodeList = result;
+        curNodeList = ans;
 
         return curNodeList;
     }
@@ -335,18 +335,18 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterEqual(final GrammarParser.FilterEqualContext ctx) {
-        final List<Node> result = new ArrayList<>();
+        final List<Node> ans = new ArrayList<>();
 
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
-        final List<Node> nodes0 = visit(ctx.rp(0));
+        final List<Node> node0List = visit(ctx.rp(0));
         curNodeList = initialCurNodeList;
-        final List<Node> nodes1 = visit(ctx.rp(1));
+        final List<Node> node1List = visit(ctx.rp(1));
 
 
-        nodes0.forEach(node0 -> {
-            nodes1.stream().filter(node0::isEqualNode).map(node1 -> node0).forEach(result::add);
+        node0List.forEach(node0 -> {
+            node1List.stream().filter(node0::isEqualNode).map(node1 -> node0).forEach(ans::add);
         });
-        curNodeList = result;
+        curNodeList = ans;
 
         return curNodeList;
     }
@@ -380,11 +380,11 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFilterOr(final GrammarParser.FilterOrContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
-        final List<Node> result = visit(ctx.filter(0));
+        final List<Node> ans = visit(ctx.filter(0));
         curNodeList = initialCurNodeList;
-        result.addAll(visit(ctx.filter(1)));
+        ans.addAll(visit(ctx.filter(1)));
 
-        curNodeList = unique(result);
+        curNodeList = unique(ans);
 
         return curNodeList;
     }
@@ -397,7 +397,15 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterAnd(final GrammarParser.FilterAndContext ctx) {
-        return visitChildren(ctx);
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> node0List = visit(ctx.filter(0));
+        curNodeList = initialCurNodeList;
+        final List<Node> node1List = visit(ctx.filter(1));
+
+
+        node0List.retainAll(node1List);
+        curNodeList = node0List;
+        return curNodeList;
     }
 
     /**
@@ -408,7 +416,8 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterRp(final GrammarParser.FilterRpContext ctx) {
-        return visitChildren(ctx);
+        curNodeList = visit(ctx.rp());
+        return curNodeList;
     }
 
     /**
@@ -419,7 +428,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterParentheses(final GrammarParser.FilterParenthesesContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.filter());
     }
 
     /**
