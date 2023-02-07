@@ -439,7 +439,25 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterString(final GrammarParser.FilterStringContext ctx) {
-        return visitChildren(ctx);
+        final List<Node> ans = new ArrayList<>();
+
+        curNodeList = visit(ctx.rp());
+        final String constantString = ctx.StringConstant().getText();
+        final String strNew = constantString.substring(1, constantString.length() - 1);
+        for (final Node node : curNodeList) {
+            final NamedNodeMap namedNodeMap = node.getAttributes();
+            if (namedNodeMap != null && namedNodeMap.getNamedItem(strNew) != null) {
+                ans.add(node);
+            }
+
+            final NodeList childNodeList = node.getChildNodes();
+            for (int i = 0; i < childNodeList.getLength(); i++) {
+                if (childNodeList.item(i).getNodeType() == Node.TEXT_NODE && childNodeList.item(i).getTextContent().equals(strNew))
+                    ans.add(childNodeList.item(i));
+            }
+        }
+        curNodeList = ans;
+        return curNodeList;
     }
 
 }
