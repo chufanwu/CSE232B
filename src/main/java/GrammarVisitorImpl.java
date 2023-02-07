@@ -361,7 +361,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFilterNot(final GrammarParser.FilterNotContext ctx) {
         final List<Node> record = new ArrayList<>(curNodeList);
-        final List<Node> tars = visit(ctx.rp());
+        final List<Node> tars = visit(ctx.filter());
         curNodeList = record;
         for (Node node:curNodeList){
             if (tars.contains(node)){
@@ -381,9 +381,9 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFilterOr(final GrammarParser.FilterOrContext ctx) {
         final List<Node> record = new ArrayList<>(curNodeList);
-        final List<Node> leftSub = visit(ctx.rp(0));
+        final List<Node> leftSub = visit(ctx.filter(0));
         curNodeList = record;
-        final List<Node> rightSub = visit(ctx.rp(1));
+        final List<Node> rightSub = visit(ctx.filter(1));
         List<Node> res = new ArrayList<>(leftSub);
         res.addAll(rightSub);
         res = unique(res);
@@ -401,9 +401,9 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFilterAnd(final GrammarParser.FilterAndContext ctx) {
         final List<Node> record = new ArrayList<>(curNodeList);
-        final List<Node> leftSub = visit(ctx.rp(0));
+        final List<Node> leftSub = visit(ctx.filter(0));
         curNodeList = record;
-        final List<Node> rightSub = visit(ctx.rp(1));
+        final List<Node> rightSub = visit(ctx.filter(1));
         List<Node> result = leftSub.stream()
                 .filter(rightSub::contains)
                 .collect(Collectors.toList());
