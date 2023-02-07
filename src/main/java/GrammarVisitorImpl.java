@@ -300,7 +300,9 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         final List<Node> nodeList = visit(ctx.rp());
 
         for (final Node node : nodeList) {
-            curNodeList = Collections.singletonList(node);
+
+            curNodeList = new ArrayList<>();
+            curNodeList.add(node);
 
             if (visit(ctx.filter()).size() != 0)
                 ans.add(node);

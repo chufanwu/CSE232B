@@ -9,12 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="add test case">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/query/query0.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/CSE232B_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/cse232b_milestone1_jar.xml" afterDir="false" />
+    <list default="true" id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="fix bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSE232B.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/query/query1out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/query/query0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/query/query0.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/query/query1out.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/query/query1out.xml" afterDir="false" />
     </list>
     <list id="2302ab28-f770-4009-a216-a57db4e0cd3c" name="ack" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +97,7 @@
       <updated>1675707837307</updated>
       <workItem from="1675719947833" duration="6733000" />
       <workItem from="1675788389310" duration="369000" />
-      <workItem from="1675788767496" duration="9819000" />
+      <workItem from="1675788767496" duration="10483000" />
     </task>
     <task id="LOCAL-00001" summary="add grammar rules">
       <created>1675712950004</created>
@@ -267,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675799377807</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="fix bug">
+      <created>1675801846687</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1675801846687</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,10 +311,10 @@
     <MESSAGE value="finish main" />
     <MESSAGE value="fix unique" />
     <MESSAGE value="fix jar" />
-    <MESSAGE value="fix bug" />
     <MESSAGE value="upload again" />
     <MESSAGE value="add test case" />
-    <option name="LAST_COMMIT_MESSAGE" value="add test case" />
+    <MESSAGE value="fix bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -324,23 +331,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java</url>
-          <line>429</line>
+          <line>431</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java</url>
-          <line>344</line>
+          <line>346</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java</url>
-          <line>349</line>
+          <line>351</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java</url>
-          <line>455</line>
+          <line>457</line>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java</url>
+          <line>233</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
