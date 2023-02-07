@@ -29,7 +29,7 @@ filter  : rp                                #FilterRp
         | rp 'eq' rp                        #FilterEqual
         | rp '==' rp                        #FilterSame
         | rp 'is' rp                        #FilterSame
-        | rp '=' ID                         #FilterString
+        | rp '=' StringConstant             #FilterString
         | '(' filter ')'                    #FilterParentheses
         | filter 'and' filter               #FilterAnd
         | filter 'or' filter                #FilterOr
@@ -39,3 +39,4 @@ filter  : rp                                #FilterRp
 /*Tokens*/
 ID : [a-zA-Z][a-zA-Z_0-9]*;
 WS: [ \t\n\r]+ -> skip;
+StringConstant: '"'[a-zA-Z0-9_ ,.!?;'"-]+'"';
