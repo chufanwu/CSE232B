@@ -60,7 +60,13 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
 
 
     private List<Node> unique(final List<Node> nodeList) {
-        return new ArrayList<>(new HashSet<>(nodeList));
+        final List<Node> ans = new ArrayList<>();
+        for(final Node node: nodeList) {
+            if(!ans.contains(node)) {
+                ans.add(node);
+            }
+        }
+        return ans;
     }
 
 
@@ -224,10 +230,11 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitRpDescendant(final GrammarParser.RpDescendantContext ctx) {
         visit(ctx.rp(0));
-        curNodeList.addAll(getAllDescendantFromCurNode());
+        final List<Node> nodeList = getAllDescendantFromCurNode();
+        curNodeList.addAll(nodeList);
         curNodeList = visit(ctx.rp(1));
 
-        return unique(curNodeList);
+        return curNodeList;
     }
 
     /**
@@ -272,12 +279,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitRpAppend(final GrammarParser.RpAppendContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
-        final List<Node> ans0 = visit(ctx.rp(0));
+        List<Node> ans0 = visit(ctx.rp(0));
         curNodeList = initialCurNodeList;
-        List<Node> ans1 = visit(ctx.rp(1));
-        ans1.addAll(ans0);
-        ans1 = unique(ans1);
-        curNodeList = ans1;
+        final List<Node> ans1 = visit(ctx.rp(1));
+        ans0.addAll(ans1);
+        ans0 = unique(ans0);
+        curNodeList = ans0;
         return curNodeList;
     }
 
@@ -362,13 +369,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> nodeList = visit(ctx.filter());
         curNodeList = initialCurNodeList;
-        for (final Node node : curNodeList) {
-            if (nodeList.contains(node)) {
-                curNodeList.remove(node);
-            }
+        if(nodeList.isEmpty()) {
+            // true
+            return curNodeList;
+        } else {
+            return Collections.emptyList();
         }
-
-        return curNodeList;
     }
 
     /**
@@ -397,14 +403,19 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterAnd(final GrammarParser.FilterAndContext ctx) {
+        final List<Node> ans = new ArrayList<>();
+
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.filter(0));
         curNodeList = initialCurNodeList;
         final List<Node> node1List = visit(ctx.filter(1));
 
-
-        node0List.retainAll(node1List);
-        curNodeList = node0List;
+        for(final Node node: node0List) {
+            if(node1List.contains(node)) {
+                ans.add(node);
+            }
+        }
+        curNodeList = ans;
         return curNodeList;
     }
 

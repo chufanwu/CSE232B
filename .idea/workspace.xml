@@ -9,79 +9,218 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4a88941-6900-4f93-8ab5-d5bc97994090" name="Changes" comment="cater to gradescope" />
+    <list default="true" id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="fix jar">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GrammarVisitorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/query/query1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/query/query1.txt" afterDir="false" />
+    </list>
+    <list id="2302ab28-f770-4009-a216-a57db4e0cd3c" name="ack" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
     </option>
+  </component>
+  <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="2LP1JnGHxKJH2NPFLpb3MrWhv0I" />
+  <component name="ProjectId" id="2LNNyq9eT07yPuofw1r0F7hQ4l2" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/teisanga/Desktop/CSE232B",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Max/Documents/projects/CSE232B/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/input" />
+      <recent name="C:\Users\Max\Documents\projects\CSE232B\src\main\resources" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Max\Documents\projects\CSE232B" />
+      <recent name="C:\Users\Max\Documents\projects\CSE232B\src\main\java\edu\ucsd\cse232b\parsers" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="CSE232B" />
+      <option name="PROGRAM_PARAMETERS" value="src/main/resources/query/query1.txt src/main/resources/query/query1out.xml" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c4a88941-6900-4f93-8ab5-d5bc97994090" name="Changes" comment="" />
-      <created>1675757833167</created>
+      <changelist id="c4e345e6-cead-429f-b8a4-8591c284a093" name="Changes" comment="" />
+      <created>1675707837307</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1675757833167</updated>
-      <workItem from="1675757834749" duration="1613000" />
+      <updated>1675707837307</updated>
+      <workItem from="1675719947833" duration="6733000" />
+      <workItem from="1675788389310" duration="369000" />
+      <workItem from="1675788767496" duration="1841000" />
     </task>
-    <task id="LOCAL-00001" summary="deprecated issue fixed">
-      <created>1675759445686</created>
+    <task id="LOCAL-00001" summary="add grammar rules">
+      <created>1675712950004</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1675759445686</updated>
+      <updated>1675712950004</updated>
     </task>
-    <task id="LOCAL-00002" summary="cater to gradescope">
-      <created>1675759626364</created>
+    <task id="LOCAL-00002" summary="add grammar rules">
+      <created>1675712957714</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1675759626364</updated>
+      <updated>1675712957714</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add visitor impl">
+      <created>1675720088659</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1675720088659</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add visitor impl">
+      <created>1675721104616</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1675721104616</updated>
+    </task>
+    <task id="LOCAL-00005" summary="impl function">
+      <created>1675726142447</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1675726142447</updated>
+    </task>
+    <task id="LOCAL-00006" summary="impl function">
+      <created>1675726822211</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1675726822211</updated>
+    </task>
+    <task id="LOCAL-00007" summary="impl function">
+      <created>1675727016573</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1675727016573</updated>
+    </task>
+    <task id="LOCAL-00008" summary="impl function">
+      <created>1675754450569</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1675754450569</updated>
+    </task>
+    <task id="LOCAL-00009" summary="impl function">
+      <created>1675754666084</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1675754666084</updated>
+    </task>
+    <task id="LOCAL-00010" summary="impl function">
+      <created>1675754934318</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1675754934318</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add string constant">
+      <created>1675755041469</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1675755041469</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add string constant">
+      <created>1675755069358</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1675755069358</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add string constant">
+      <created>1675756008359</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1675756008359</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add string constant">
+      <created>1675756456094</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1675756456094</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add string constant">
+      <created>1675757069445</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1675757069445</updated>
+    </task>
+    <task id="LOCAL-00016" summary="finish main">
+      <created>1675757670976</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1675757670976</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fix unique">
+      <created>1675788493888</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1675788493888</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fix jar">
+      <created>1675788917799</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1675788917799</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -99,8 +238,13 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="deprecated issue fixed" />
-    <MESSAGE value="cater to gradescope" />
-    <option name="LAST_COMMIT_MESSAGE" value="cater to gradescope" />
+    <MESSAGE value="add grammar rules" />
+    <MESSAGE value="add visitor impl" />
+    <MESSAGE value="impl function" />
+    <MESSAGE value="add string constant" />
+    <MESSAGE value="finish main" />
+    <MESSAGE value="fix unique" />
+    <MESSAGE value="fix jar" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix jar" />
   </component>
 </project>
