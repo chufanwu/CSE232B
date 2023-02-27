@@ -237,6 +237,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
                 }
             }
         }
+
         return unique(ans);
     }
 
@@ -250,7 +251,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         }
         return ans;
     }
-
 
 
     /**
@@ -315,8 +315,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitTagName(final GrammarParser.TagNameContext ctx) {
-        // run three times
-        //System.out.println("running visitTagName");
         final String tagName = ctx.ID().getText();
         final List<Node> ans = new ArrayList<>();
 
@@ -339,9 +337,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitParent(final GrammarParser.ParentContext ctx) {
-        //four times
-        //System.out.println("running getParentsFromCurNode");
-
         curNodeList = getParentsFromCurNode();
 
         return curNodeList;
@@ -364,7 +359,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitChilden(final GrammarParser.ChildenContext ctx) {
-//        System.out.println("running visitChilden");
         final List<Node> ans = new ArrayList<>();
         for (final Node node : curNodeList) {
             IntStream.range(0, node.getChildNodes().getLength())
@@ -404,7 +398,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitRpChildren(final GrammarParser.RpChildrenContext ctx) {
-//        System.out.println("running visitRpChildren");
         visit(ctx.rp(0));
         curNodeList = visit(ctx.rp(1));
 
@@ -446,7 +439,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitText(final GrammarParser.TextContext ctx) {
-//        System.out.println("running visitText");
         final List<Node> ans = new ArrayList<>();
         for (final Node node : curNodeList) {
             final NodeList childNodeList = node.getChildNodes();
@@ -487,8 +479,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitRpFilter(final GrammarParser.RpFilterContext ctx) {
-        //System.out.println("running visitRpFilter");
-        // run only once
         final List<Node> ans = new ArrayList<>();
         final List<Node> nodeList = visit(ctx.rp());
 
@@ -513,7 +503,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterSame(final GrammarParser.FilterSameContext ctx) {
-//        System.out.println("running visitFilterSame");
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.rp(0));
         curNodeList = initialCurNodeList;
@@ -562,14 +551,13 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterNot(final GrammarParser.FilterNotContext ctx) {
-        System.out.println("running revised visit filternot");
-        List<Node> curNodesCopy = new ArrayList<>(curNodeList);
-        List<Node> fil1NodeList = visit(ctx.filter());
-        if (!fil1NodeList.isEmpty()) {
-            return new ArrayList<>();
+        final List<Node> nodeList = visit(ctx.filter());
+        if(nodeList.isEmpty()) {
+            // true
+            return curNodeList;
+        } else {
+            return Collections.emptyList();
         }
-        curNodeList = curNodesCopy;
-        return curNodesCopy;
     }
 
     /**
@@ -638,7 +626,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterParentheses(final GrammarParser.FilterParenthesesContext ctx) {
-//        System.out.println("running visitFilterParentheses");
         return visit(ctx.filter());
     }
 
@@ -650,7 +637,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterString(final GrammarParser.FilterStringContext ctx) {
-        System.out.println("calling visitFilterString");
         curNodeList = visit(ctx.rp());
         final String constantString = ctx.StringConstant().getText();
         final String strNew = constantString.substring(1, constantString.length() - 1);
@@ -666,4 +652,5 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
 
         return Collections.emptyList();
     }
+
 }
