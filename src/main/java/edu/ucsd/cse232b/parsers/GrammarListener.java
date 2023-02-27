@@ -10,6 +10,296 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface GrammarListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by the {@code XqChildren}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqChildren(GrammarParser.XqChildrenContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqChildren}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqChildren(GrammarParser.XqChildrenContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqAp}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqAp(GrammarParser.XqApContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqAp}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqAp(GrammarParser.XqApContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqAppend}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqAppend(GrammarParser.XqAppendContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqAppend}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqAppend(GrammarParser.XqAppendContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqVariable}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqVariable(GrammarParser.XqVariableContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqVariable}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqVariable(GrammarParser.XqVariableContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqParentheses}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqParentheses(GrammarParser.XqParenthesesContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqParentheses}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqParentheses(GrammarParser.XqParenthesesContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqDescendant}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqDescendant(GrammarParser.XqDescendantContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqDescendant}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqDescendant(GrammarParser.XqDescendantContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqString}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqString(GrammarParser.XqStringContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqString}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqString(GrammarParser.XqStringContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqQuery}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqQuery(GrammarParser.XqQueryContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqQuery}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqQuery(GrammarParser.XqQueryContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Xqtag}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqtag(GrammarParser.XqtagContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Xqtag}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqtag(GrammarParser.XqtagContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqLet}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqLet(GrammarParser.XqLetContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqLet}
+	 * labeled alternative in {@link GrammarParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqLet(GrammarParser.XqLetContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#var}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar(GrammarParser.VarContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#var}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar(GrammarParser.VarContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqBeginTag}
+	 * labeled alternative in {@link GrammarParser#beginTag}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqBeginTag(GrammarParser.XqBeginTagContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqBeginTag}
+	 * labeled alternative in {@link GrammarParser#beginTag}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqBeginTag(GrammarParser.XqBeginTagContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code XqEndTag}
+	 * labeled alternative in {@link GrammarParser#endTag}.
+	 * @param ctx the parse tree
+	 */
+	void enterXqEndTag(GrammarParser.XqEndTagContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code XqEndTag}
+	 * labeled alternative in {@link GrammarParser#endTag}.
+	 * @param ctx the parse tree
+	 */
+	void exitXqEndTag(GrammarParser.XqEndTagContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#forClause}.
+	 * @param ctx the parse tree
+	 */
+	void enterForClause(GrammarParser.ForClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#forClause}.
+	 * @param ctx the parse tree
+	 */
+	void exitForClause(GrammarParser.ForClauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#letClause}.
+	 * @param ctx the parse tree
+	 */
+	void enterLetClause(GrammarParser.LetClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#letClause}.
+	 * @param ctx the parse tree
+	 */
+	void exitLetClause(GrammarParser.LetClauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#whereClause}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhereClause(GrammarParser.WhereClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#whereClause}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhereClause(GrammarParser.WhereClauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#returnClause}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnClause(GrammarParser.ReturnClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#returnClause}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnClause(GrammarParser.ReturnClauseContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondOr}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondOr(GrammarParser.CondOrContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondOr}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondOr(GrammarParser.CondOrContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondAnd}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondAnd(GrammarParser.CondAndContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondAnd}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondAnd(GrammarParser.CondAndContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondParentheses}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondParentheses(GrammarParser.CondParenthesesContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondParentheses}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondParentheses(GrammarParser.CondParenthesesContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondEmpty}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondEmpty(GrammarParser.CondEmptyContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondEmpty}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondEmpty(GrammarParser.CondEmptyContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondSome}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondSome(GrammarParser.CondSomeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondSome}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondSome(GrammarParser.CondSomeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondSame}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondSame(GrammarParser.CondSameContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondSame}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondSame(GrammarParser.CondSameContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondNot}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondNot(GrammarParser.CondNotContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondNot}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondNot(GrammarParser.CondNotContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CondEqual}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondEqual(GrammarParser.CondEqualContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CondEqual}
+	 * labeled alternative in {@link GrammarParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondEqual(GrammarParser.CondEqualContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ApChildren}
 	 * labeled alternative in {@link GrammarParser#ap}.
 	 * @param ctx the parse tree
