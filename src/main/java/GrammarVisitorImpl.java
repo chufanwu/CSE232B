@@ -731,6 +731,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFilterNot(final GrammarParser.FilterNotContext ctx) {
         System.out.println("running revised visitFilterNot");
+
         final List<Node> storedList = new ArrayList<>(curNodeList);
         final List<Node> nodeList = visit(ctx.filter());
         curNodeList = storedList;
