@@ -1,7 +1,11 @@
 import edu.ucsd.cse232b.parsers.GrammarBaseVisitor;
 import edu.ucsd.cse232b.parsers.GrammarParser;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,192 +17,6 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
-    private static final List<Node> trueNode = Collections.singletonList(new Node() {
-        @Override
-        public String getNodeName() {
-            return null;
-        }
-
-        @Override
-        public String getNodeValue() throws DOMException {
-            return null;
-        }
-
-        @Override
-        public void setNodeValue(final String nodeValue) throws DOMException {
-
-        }
-
-        @Override
-        public short getNodeType() {
-            return 0;
-        }
-
-        @Override
-        public Node getParentNode() {
-            return null;
-        }
-
-        @Override
-        public NodeList getChildNodes() {
-            return null;
-        }
-
-        @Override
-        public Node getFirstChild() {
-            return null;
-        }
-
-        @Override
-        public Node getLastChild() {
-            return null;
-        }
-
-        @Override
-        public Node getPreviousSibling() {
-            return null;
-        }
-
-        @Override
-        public Node getNextSibling() {
-            return null;
-        }
-
-        @Override
-        public NamedNodeMap getAttributes() {
-            return null;
-        }
-
-        @Override
-        public Document getOwnerDocument() {
-            return null;
-        }
-
-        @Override
-        public Node insertBefore(final Node newChild, final Node refChild) throws DOMException {
-            return null;
-        }
-
-        @Override
-        public Node replaceChild(final Node newChild, final Node oldChild) throws DOMException {
-            return null;
-        }
-
-        @Override
-        public Node removeChild(final Node oldChild) throws DOMException {
-            return null;
-        }
-
-        @Override
-        public Node appendChild(final Node newChild) throws DOMException {
-            return null;
-        }
-
-        @Override
-        public boolean hasChildNodes() {
-            return false;
-        }
-
-        @Override
-        public Node cloneNode(final boolean deep) {
-            return null;
-        }
-
-        @Override
-        public void normalize() {
-
-        }
-
-        @Override
-        public boolean isSupported(final String feature, final String version) {
-            return false;
-        }
-
-        @Override
-        public String getNamespaceURI() {
-            return null;
-        }
-
-        @Override
-        public String getPrefix() {
-            return null;
-        }
-
-        @Override
-        public void setPrefix(final String prefix) throws DOMException {
-
-        }
-
-        @Override
-        public String getLocalName() {
-            return null;
-        }
-
-        @Override
-        public boolean hasAttributes() {
-            return false;
-        }
-
-        @Override
-        public String getBaseURI() {
-            return null;
-        }
-
-        @Override
-        public short compareDocumentPosition(final Node other) throws DOMException {
-            return 0;
-        }
-
-        @Override
-        public String getTextContent() throws DOMException {
-            return null;
-        }
-
-        @Override
-        public void setTextContent(final String textContent) throws DOMException {
-
-        }
-
-        @Override
-        public boolean isSameNode(final Node other) {
-            return false;
-        }
-
-        @Override
-        public String lookupPrefix(final String namespaceURI) {
-            return null;
-        }
-
-        @Override
-        public boolean isDefaultNamespace(final String namespaceURI) {
-            return false;
-        }
-
-        @Override
-        public String lookupNamespaceURI(final String prefix) {
-            return null;
-        }
-
-        @Override
-        public boolean isEqualNode(final Node arg) {
-            return false;
-        }
-
-        @Override
-        public Object getFeature(final String feature, final String version) {
-            return null;
-        }
-
-        @Override
-        public Object setUserData(final String key, final Object data, final UserDataHandler handler) {
-            return null;
-        }
-
-        @Override
-        public Object getUserData(final String key) {
-            return null;
-        }
-    });
     private List<Node> curNodeList = new ArrayList<>();
 
     @Override
@@ -483,9 +301,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         final List<Node> nodeList = visit(ctx.rp());
 
         for (final Node node : nodeList) {
-
-            curNodeList = new ArrayList<>();
-            curNodeList.add(node);
+            curNodeList = Collections.singletonList(node);
 
             if (visit(ctx.filter()).size() != 0)
                 ans.add(node);
@@ -503,20 +319,20 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterSame(final GrammarParser.FilterSameContext ctx) {
+        final List<Node> ans = new ArrayList<>();
+
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.rp(0));
         curNodeList = initialCurNodeList;
         final List<Node> node1List = visit(ctx.rp(1));
 
 
-        for (final Node node0 : node0List) {
-            for (final Node node1 : node1List) {
-                if (node0.isSameNode(node1)) {
-                    return trueNode;
-                }
-            }
-        }
-        return Collections.emptyList();
+        node0List.forEach(node0 -> {
+            node1List.stream().filter(node0::isSameNode).map(node1 -> node0).forEach(ans::add);
+        });
+        curNodeList = ans;
+
+        return curNodeList;
     }
 
     /**
@@ -527,20 +343,20 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterEqual(final GrammarParser.FilterEqualContext ctx) {
+        final List<Node> ans = new ArrayList<>();
+
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.rp(0));
         curNodeList = initialCurNodeList;
         final List<Node> node1List = visit(ctx.rp(1));
 
 
-        for (final Node node0 : node0List) {
-            for (final Node node1 : node1List) {
-                if (node0.isEqualNode(node1)) {
-                    return trueNode;
-                }
-            }
-        }
-        return Collections.emptyList();
+        node0List.forEach(node0 -> {
+            node1List.stream().filter(node0::isEqualNode).map(node1 -> node0).forEach(ans::add);
+        });
+        curNodeList = ans;
+
+        return curNodeList;
     }
 
     /**
@@ -551,7 +367,9 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterNot(final GrammarParser.FilterNotContext ctx) {
+        final List<Node> storedList = new ArrayList<>(curNodeList);
         final List<Node> nodeList = visit(ctx.filter());
+        curNodeList = storedList;
         if(nodeList.isEmpty()) {
             // true
             return curNodeList;
@@ -569,16 +387,13 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFilterOr(final GrammarParser.FilterOrContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
-        final List<Node> node0List = visit(ctx.filter(0));
+        final List<Node> ans = visit(ctx.filter(0));
         curNodeList = initialCurNodeList;
-        final List<Node> node1List = visit(ctx.filter(1));
+        ans.addAll(visit(ctx.filter(1)));
 
-        if(node0List.isEmpty() || node1List.isEmpty()) {
-            // any empty then false
-            return Collections.emptyList();
-        } else {
-            return trueNode;
-        }
+        curNodeList = unique(ans);
+
+        return curNodeList;
     }
 
     /**
@@ -589,17 +404,20 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterAnd(final GrammarParser.FilterAndContext ctx) {
+        final List<Node> ans = new ArrayList<>();
+
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.filter(0));
         curNodeList = initialCurNodeList;
         final List<Node> node1List = visit(ctx.filter(1));
 
-        if(!node0List.isEmpty() && !node1List.isEmpty()) {
-            // both not empty then true
-            return trueNode;
-        } else {
-            return Collections.emptyList();
+        for(final Node node: node0List) {
+            if(node1List.contains(node)) {
+                ans.add(node);
+            }
         }
+        curNodeList = ans;
+        return curNodeList;
     }
 
     /**
@@ -611,11 +429,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFilterRp(final GrammarParser.FilterRpContext ctx) {
         curNodeList = visit(ctx.rp());
-        if(curNodeList.isEmpty()) {
-            return Collections.emptyList();
-        } else {
-            return trueNode;
-        }
+        return curNodeList;
     }
 
     /**
@@ -637,20 +451,25 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterString(final GrammarParser.FilterStringContext ctx) {
+        final List<Node> ans = new ArrayList<>();
+
         curNodeList = visit(ctx.rp());
         final String constantString = ctx.StringConstant().getText();
         final String strNew = constantString.substring(1, constantString.length() - 1);
         for (final Node node : curNodeList) {
             final NamedNodeMap namedNodeMap = node.getAttributes();
             if (namedNodeMap != null && namedNodeMap.getNamedItem(strNew) != null) {
-                return trueNode;
+                ans.add(node);
             }
 
-            if (node.getNodeType() == Node.TEXT_NODE && node.getTextContent().equals(strNew))
-                return trueNode;
+            final NodeList childNodeList = node.getChildNodes();
+            for (int i = 0; i < childNodeList.getLength(); i++) {
+                if (childNodeList.item(i).getNodeType() == Node.TEXT_NODE && childNodeList.item(i).getTextContent().equals(strNew))
+                    ans.add(childNodeList.item(i));
+            }
         }
-
-        return Collections.emptyList();
+        curNodeList = ans;
+        return curNodeList;
     }
 
 }
