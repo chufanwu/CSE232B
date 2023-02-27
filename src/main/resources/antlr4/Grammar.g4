@@ -5,6 +5,52 @@ package edu.ucsd.cse232b.parsers;
 }
 
 /*Rules*/
+xq      : var                               #XqVariable
+        | StringConstant                    #XqString
+        | ap                                #XqAp
+        | '(' xq ')'                        #XqParentheses
+        | xq ',' xq                         #XqAppend
+        | xq '/' rp                         #XqChildren
+        | xq '//' rp                        #XqDescendant
+        | beginTag '{' xq '}' endTag        #Xqtag
+        | forClause letClause? whereClause? returnClause #XqQuery
+        | letClause xq                      #XqLet
+        ;
+
+var     : '$' ID
+        ;
+
+beginTag : '<' ID '>'                        #XqBeginTag
+        ;
+
+endTag  : '</' ID '>'                       #XqEndTag
+        ;
+
+forClause : 'for' var 'in' xq (',' var 'in' xq )*
+          ;
+
+letClause : 'let' var ':=' xq (',' var ':=' xq)*
+          ;
+
+whereClause : 'where' cond
+            ;
+
+returnClause : 'return' xq
+            ;
+
+cond        : xq '=' xq                     #CondEqual
+            | xq 'eq' xq                    #CondEqual
+            | xq '==' xq                    #CondSame
+            | xq 'is' xq                    #CondSame
+            | 'empty' '(' xq ')'            #CondEmpty
+            | 'some' var 'in' xq (',' var 'in' xq)* 'satisfies' cond                  # CondSome
+            | '(' cond ')'                  # CondParentheses
+            | cond 'and' cond               # CondAnd
+            | cond 'or' cond                # CondOr
+            | 'not' cond                    # CondNot
+            ;
+
+
 ap      : doc '/' rp                        # ApChildren
         | doc '//' rp                       # ApDescendant;
 
