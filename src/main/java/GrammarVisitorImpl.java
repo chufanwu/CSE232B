@@ -201,7 +201,21 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     });
     private List<Node> curNodeList = new ArrayList<>();
 
+    //following belong to xq
+    private Map<String,List<Node>> variableMap = new HashMap<>();
+    public Document doc = null;
+    // todo
+    //copy-pasted following constructor, need revise
 
+    public GrammarVisitorImpl(){
+        try {
+            DocumentBuilderFactory docBF = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docB = docBF.newDocumentBuilder();
+            doc = docB.newDocument();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -209,63 +223,133 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqChildren(GrammarParser.XqChildrenContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitXqChildren(GrammarParser.XqChildrenContext ctx) {
+        List<Node> res = new ArrayList<>();
+        for (Node node : curNodeList) {
+            NodeList children = node.getChildNodes();
+            for (int i = 0; i < children.getLength(); i++) {
+                res.add(children.item(i));
+            }
+        }
+        return res;
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqAp(GrammarParser.XqApContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitXqAp(GrammarParser.XqApContext ctx) {
+        return visit(ctx.ap()); }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqAppend(GrammarParser.XqAppendContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitXqAppend(GrammarParser.XqAppendContext ctx) {
+        List<Node> tmp = new ArrayList<>();
+        List<Node> storedList = new ArrayList<>(curNodeList);
+        visit(ctx.xq(0));
+        tmp.addAll(curNodeList);
+        curNodeList = storedList;
+        visit(ctx.xq(1));
+        tmp.addAll(curNodeList);
+        tmp = unique(tmp);
+        return tmp;
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqVariable(GrammarParser.XqVariableContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitXqVariable(GrammarParser.XqVariableContext ctx) {
+        String varText = ctx.var().getText();
+        List<Node> res = variableMap.getOrDefault(varText,new ArrayList<>());
+        return res;
+        }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqParentheses(GrammarParser.XqParenthesesContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitXqParentheses(GrammarParser.XqParenthesesContext ctx) {
+        List<Node> res = visit(ctx.xq());
+        return res;
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqDescendant(GrammarParser.XqDescendantContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitXqDescendant(GrammarParser.XqDescendantContext ctx) {
+        curNodeList = visit(ctx.xq());
+        Queue<Node> queue = new ArrayDeque<>(curNodeList);
+        List<Node> res = new ArrayList<>(curNodeList);
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            if (node.hasChildNodes()) {
+                NodeList children = node.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    res.add(child);
+                    queue.add(child);
+                }
+            }
+        }
+        curNodeList = unique(curNodeList);
+        visit(ctx.rp());
+        return unique(curNodeList);
+    }
+        /**
+         * {@inheritDoc}
+         *
+         * <p>The default implementation returns the result of calling
+         * {@link #visitChildren} on {@code ctx}.</p>
+         */
+    @Override public List<Node> visitXqString(GrammarParser.XqStringContext ctx) {
+        String text = ctx.StringConstant().getText();
+        int len = text.length();
+        if (len < 2) {
+            throw new IllegalArgumentException("Text must have at least two characters");
+        }
+        text = text.substring(1,len-1);
+        List<Node> res = new ArrayList<>(Collections.singletonList(doc.createTextNode(text)));
+        return res;
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqString(GrammarParser.XqStringContext ctx) { return visitChildren(ctx); }
+    //todo
+    @Override public List<Node> visitXqQuery(GrammarParser.XqQueryContext ctx) {
+        return visitChildren(ctx); }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitXqQuery(GrammarParser.XqQueryContext ctx) { return visitChildren(ctx); }
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation returns the result of calling
-     * {@link #visitChildren} on {@code ctx}.</p>
-     */
-    @Override public List<Node> visitXqtag(GrammarParser.XqtagContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitXqtag(GrammarParser.XqtagContext ctx) {
+        List<Node> nodeList = visit(ctx.xq());
+        String tagName = ctx.beginTag().getText();
+        Node resNode = doc.createElement(tagName);
+        for (Node node: nodeList) {
+            if (node == null) {
+                continue;
+            }
+            Node tmp = doc.importNode(node, true);
+            resNode.appendChild(tmp);
+            }
+
+        return new ArrayList<>(Collections.singletonList(resNode));
+    }
+    //todo
     /**
      * {@inheritDoc}
      *
@@ -279,7 +363,8 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitVar(GrammarParser.VarContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitVar(GrammarParser.VarContext ctx) {
+        return variableMap.get(ctx.getText()); }
     /**
      * {@inheritDoc}
      *
@@ -300,20 +385,27 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitForClause(GrammarParser.ForClauseContext ctx) { return visitChildren(ctx); }
+    //todo
+    @Override public List<Node> visitForClause(GrammarParser.ForClauseContext ctx) {
+        return visitChildren(ctx);
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitLetClause(GrammarParser.LetClauseContext ctx) { return visitChildren(ctx); }
+    //todo
+    @Override public List<Node> visitLetClause(GrammarParser.LetClauseContext ctx) {
+        return visitChildren(ctx);
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
+    //todo
     @Override public List<Node> visitWhereClause(GrammarParser.WhereClauseContext ctx) { return visitChildren(ctx); }
     /**
      * {@inheritDoc}
@@ -321,63 +413,170 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitReturnClause(GrammarParser.ReturnClauseContext ctx) { return visitChildren(ctx); }
+    //todo
+    @Override public List<Node> visitReturnClause(GrammarParser.ReturnClauseContext ctx) {
+        return visit(ctx.xq()); }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondOr(GrammarParser.CondOrContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitCondOr(GrammarParser.CondOrContext ctx) {
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> node0List = visit(ctx.cond(0));
+        curNodeList = initialCurNodeList;
+        final List<Node> node1List = visit(ctx.cond(1));
+        if(node0List.isEmpty() || node1List.isEmpty()) {
+            Node n = doc.createTextNode("true");
+            return new ArrayList<>(Collections.singletonList(n));
+        } else {
+            return Collections.emptyList();
+        }
+        }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondAnd(GrammarParser.CondAndContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitCondAnd(GrammarParser.CondAndContext ctx) {
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> node0List = visit(ctx.cond(0));
+        curNodeList = initialCurNodeList;
+        final List<Node> node1List = visit(ctx.cond(1));
+        List<Node> res = new ArrayList<>();
+
+        if(!node0List.isEmpty() && !node1List.isEmpty()) {
+            // both not empty then true
+            Node n = doc.createTextNode("true");
+            return new ArrayList<>(Collections.singletonList(n));
+        } else {
+            return Collections.emptyList();
+        }
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondParentheses(GrammarParser.CondParenthesesContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitCondParentheses(GrammarParser.CondParenthesesContext ctx) {
+        return visit(ctx.cond());
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondEmpty(GrammarParser.CondEmptyContext ctx) { return visitChildren(ctx); }
+    //unsure about version
+    @Override public List<Node> visitCondEmpty(GrammarParser.CondEmptyContext ctx) {
+        List<Node> res = visit(ctx.xq());
+        if (res.isEmpty()){
+            Node n = doc.createTextNode("true");
+            return new ArrayList<Node>(Collections.singletonList(n));
+        }
+        return Collections.emptyList();
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondSome(GrammarParser.CondSomeContext ctx) { return visitChildren(ctx); }
+//    @Override public List<Node> visitCondSome(GrammarParser.CondSomeContext ctx) {
+//        HashMap<String, List<Node>> map = new HashMap<>(variableMap);
+//        List<Node> nodes = this.curNodeList;
+//        for (int i = 0; i < ctx.var().size(); ++i) {
+//            String varName = ctx.var(i).getText();
+//            List<Node> xq = visit(ctx.xq(i));
+//            this.variableMap.put(varName, xq);
+//        }
+//        List<Node> cond = visit(ctx.cond());
+//        this.variableMap = map;
+//        this.curNodeList = nodes;
+//        return cond;
+//    }
+
+    // unsure
+    @Override
+    public List<Node> visitCondSome(GrammarParser.CondSomeContext ctx) {
+        HashMap<String, List<Node>> storedMap = new HashMap<>(variableMap);
+        List<Node> nodes = curNodeList;
+        for (int i = 0; i < ctx.var().size(); ++i) {
+            String varName = ctx.var(i).getText();
+            variableMap.put(varName, visit(ctx.xq(i)));
+        }
+        List<Node> cond = visit(ctx.cond());
+        variableMap = storedMap;
+        curNodeList = nodes;
+        return cond;
+    }
+
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondSame(GrammarParser.CondSameContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitCondSame(GrammarParser.CondSameContext ctx) {
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> node0List = visit(ctx.xq(0));
+        curNodeList = initialCurNodeList;
+        final List<Node> node1List = visit(ctx.xq(1));
+
+
+        for (final Node node0 : node0List) {
+            for (final Node node1 : node1List) {
+                if (node0.isSameNode(node1)) {
+                    Node n = doc.createTextNode("true");
+                    return new ArrayList<Node>(Collections.singletonList(n));
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondNot(GrammarParser.CondNotContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitCondNot(GrammarParser.CondNotContext ctx) {
+        //System.out.println("running revised visitFilterNot");
+
+        final List<Node> nodeList = visit(ctx.cond());
+        if(nodeList.isEmpty()) {
+            Node n = doc.createTextNode("true");
+            return new ArrayList<Node>(Collections.singletonList(n));
+        } else {
+            return Collections.emptyList();
+        }
+    }
     /**
      * {@inheritDoc}
      *
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    @Override public List<Node> visitCondEqual(GrammarParser.CondEqualContext ctx) { return visitChildren(ctx); }
+    @Override public List<Node> visitCondEqual(GrammarParser.CondEqualContext ctx) {
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> node0List = visit(ctx.xq(0));
+        curNodeList = initialCurNodeList;
+        final List<Node> node1List = visit(ctx.xq(1));
+
+
+        for (final Node node0 : node0List) {
+            for (final Node node1 : node1List) {
+                if (node0.isEqualNode(node1)) {
+                    Node n = doc.createTextNode("true");
+                    return new ArrayList<Node>(Collections.singletonList(n));
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
 
 
     @Override
@@ -730,7 +929,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitFilterNot(final GrammarParser.FilterNotContext ctx) {
-        System.out.println("running revised visitFilterNot");
+        //System.out.println("running revised visitFilterNot");
 
         final List<Node> storedList = new ArrayList<>(curNodeList);
         final List<Node> nodeList = visit(ctx.filter());
