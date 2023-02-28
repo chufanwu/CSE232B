@@ -342,7 +342,41 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     //todo
     @Override
     public List<Node> visitXqQuery(final GrammarParser.XqQueryContext ctx) {
-        return visitChildren(ctx);
+        final HashMap<String, List<Node>> storedMap = new HashMap<>(variableMap);
+
+        final List<Node> result = new ArrayList<>();
+        visitFLWR(ctx, 0, result);
+
+
+        variableMap = storedMap;
+        return result;
+    }
+
+    private void visitFLWR(final GrammarParser.XqQueryContext ctx, final int k, final List<Node> result) {
+        if (k == ctx.forClause().var().size()) {
+            if (ctx.letClause() != null) {
+                visit(ctx.letClause());
+            }
+            if (ctx.whereClause() != null && visit(ctx.whereClause()) == null) {
+                return;
+            }
+
+            result.addAll(visit(ctx.returnClause()));
+            return;
+        }
+
+        final String var = ctx.forClause().var(k).getText();
+        final List<Node> bind = visit(ctx.forClause().xq(k));
+
+        for (final Node node : bind) {
+            final Map<String, List<Node>> backup = new HashMap<>(variableMap);
+            final List<Node> single = new ArrayList<>();
+
+            single.add(node);
+            variableMap.put(var, single);
+            visitFLWR(ctx, k + 1, result);
+            variableMap = backup;
+        }
     }
 
     /**
@@ -353,18 +387,23 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqtag(final GrammarParser.XqtagContext ctx) {
-        final List<Node> nodeList = visit(ctx.xq());
-        final String tagName = ctx.beginTag().getText();
-        final Node resNode = doc.createElement(tagName);
-        for (final Node node : nodeList) {
-            if (node == null) {
-                continue;
-            }
-            final Node tmp = doc.importNode(node, true);
-            resNode.appendChild(tmp);
+        String startTag = ((GrammarParser.XqBeginTagContext) ctx.beginTag()).ID().getText();
+        String endTag = ((GrammarParser.XqEndTagContext) ctx.endTag()).ID().getText();
+
+        if (!startTag.equals(endTag)) {
+            throw new RuntimeException("Start tag does not match end tag");
         }
 
-        return new ArrayList<>(Collections.singletonList(resNode));
+        Node resultNode = doc.createElement(startTag);
+        for (Node node : visit(ctx.xq())) {
+            Node child = doc.importNode(node, true);
+            resultNode.appendChild(child);
+        }
+
+        List<Node> result = new ArrayList<>();
+        result.add(resultNode);
+
+        return result;
     }
     //todo
 
@@ -376,7 +415,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqLet(final GrammarParser.XqLetContext ctx) {
-        return visitChildren(ctx);
+        List<Node> ans = new ArrayList<>();
+        final HashMap<String, List<Node>> storedMap = new HashMap<>(variableMap);
+        visit(ctx.letClause());
+        ans = visit(ctx.xq());
+        variableMap = storedMap;
+        return ans;
     }
 
     /**
@@ -387,7 +431,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitVar(final GrammarParser.VarContext ctx) {
-        return variableMap.get(ctx.getText());
+        return Collections.emptyList();
     }
 
     /**
@@ -398,7 +442,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqBeginTag(final GrammarParser.XqBeginTagContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.ID());
     }
 
     /**
@@ -409,7 +453,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqEndTag(final GrammarParser.XqEndTagContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.ID());
     }
 
     /**
@@ -421,7 +465,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     //todo
     @Override
     public List<Node> visitForClause(final GrammarParser.ForClauseContext ctx) {
-        return visitChildren(ctx);
+        return Collections.emptyList();
     }
 
     /**
@@ -433,7 +477,13 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     //todo
     @Override
     public List<Node> visitLetClause(final GrammarParser.LetClauseContext ctx) {
-        return visitChildren(ctx);
+        final int varSize = ctx.var().size();
+
+        for (int i = 0; i < varSize; i++) {
+            variableMap.put(ctx.var().get(i).getText(), visit(ctx.xq(i)));
+        }
+
+        return Collections.emptyList();
     }
 
     /**
@@ -445,7 +495,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     //todo
     @Override
     public List<Node> visitWhereClause(final GrammarParser.WhereClauseContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.cond());
     }
 
     /**
