@@ -223,14 +223,10 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqChildren(final GrammarParser.XqChildrenContext ctx) {
-        final List<Node> res = new ArrayList<>();
-        for (final Node node : curNodeList) {
-            final NodeList children = node.getChildNodes();
-            for (int i = 0; i < children.getLength(); i++) {
-                res.add(children.item(i));
-            }
-        }
-        return res;
+        curNodeList = visit(ctx.xq());
+        final List<Node> ans = visit(ctx.rp());
+        curNodeList = ans;
+        return ans;
     }
 
     /**
