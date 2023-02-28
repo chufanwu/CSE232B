@@ -248,15 +248,13 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqAppend(final GrammarParser.XqAppendContext ctx) {
-        List<Node> tmp = new ArrayList<>();
         final List<Node> storedList = new ArrayList<>(curNodeList);
-        visit(ctx.xq(0));
-        tmp.addAll(curNodeList);
+        final List<Node> ans = visit(ctx.xq(0));
+        curNodeList = new ArrayList<>(storedList);
+        ans.addAll(visit(ctx.xq(1)));
         curNodeList = storedList;
-        visit(ctx.xq(1));
-        tmp.addAll(curNodeList);
-        tmp = unique(tmp);
-        return tmp;
+
+        return ans;
     }
 
     /**
@@ -268,8 +266,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitXqVariable(final GrammarParser.XqVariableContext ctx) {
         final String varText = ctx.var().getText();
-        final List<Node> res = variableMap.getOrDefault(varText, new ArrayList<>());
-        return res;
+        return variableMap.getOrDefault(varText, curNodeList);
     }
 
     /**
@@ -280,8 +277,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqParentheses(final GrammarParser.XqParenthesesContext ctx) {
-        final List<Node> res = visit(ctx.xq());
-        return res;
+        return visit(ctx.xq());
     }
 
     /**
@@ -335,16 +331,15 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    //todo
     @Override
+    //real todo
     public List<Node> visitXqQuery(final GrammarParser.XqQueryContext ctx) {
-        final HashMap<String, List<Node>> storedMap = new HashMap<>(variableMap);
-
         final List<Node> result = new ArrayList<>();
+        final Map<String, List<Node>> backup = new HashMap<>(variableMap);
+
         visitFLWR(ctx, 0, result);
+        variableMap = backup;
 
-
-        variableMap = storedMap;
         return result;
     }
 
@@ -353,7 +348,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
             if (ctx.letClause() != null) {
                 visit(ctx.letClause());
             }
-            if (ctx.whereClause() != null && visit(ctx.whereClause()) == null) {
+            if (ctx.whereClause() != null && visit(ctx.whereClause()).size() == 0) {
                 return;
             }
 
@@ -381,27 +376,27 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
+    //real todo
     @Override
     public List<Node> visitXqtag(final GrammarParser.XqtagContext ctx) {
-        String startTag = ((GrammarParser.XqBeginTagContext) ctx.beginTag()).ID().getText();
-        String endTag = ((GrammarParser.XqEndTagContext) ctx.endTag()).ID().getText();
+        final String startTag = ((GrammarParser.XqBeginTagContext) ctx.beginTag()).ID().getText();
+        final String endTag = ((GrammarParser.XqEndTagContext) ctx.endTag()).ID().getText();
 
         if (!startTag.equals(endTag)) {
             throw new RuntimeException("Start tag does not match end tag");
         }
 
-        Node resultNode = doc.createElement(startTag);
-        for (Node node : visit(ctx.xq())) {
-            Node child = doc.importNode(node, true);
+        final Node resultNode = doc.createElement(startTag);
+        for (final Node node : visit(ctx.xq())) {
+            final Node child = doc.importNode(node, true);
             resultNode.appendChild(child);
         }
 
-        List<Node> result = new ArrayList<>();
+        final List<Node> result = new ArrayList<>();
         result.add(resultNode);
 
         return result;
     }
-    //todo
 
     /**
      * {@inheritDoc}
@@ -411,12 +406,13 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitXqLet(final GrammarParser.XqLetContext ctx) {
-        List<Node> ans = new ArrayList<>();
-        final HashMap<String, List<Node>> storedMap = new HashMap<>(variableMap);
+        final Map<String, List<Node>> backup = new HashMap<>(variableMap);
+
         visit(ctx.letClause());
-        ans = visit(ctx.xq());
-        variableMap = storedMap;
-        return ans;
+        final List<Node> result = visit(ctx.xq());
+        variableMap = backup;
+
+        return result;
     }
 
     /**
@@ -427,7 +423,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitVar(final GrammarParser.VarContext ctx) {
-        return Collections.emptyList();
+        return curNodeList;
     }
 
     /**
@@ -461,7 +457,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     //todo
     @Override
     public List<Node> visitForClause(final GrammarParser.ForClauseContext ctx) {
-        return Collections.emptyList();
+        return curNodeList;
     }
 
     /**
@@ -479,7 +475,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
             variableMap.put(ctx.var().get(i).getText(), visit(ctx.xq(i)));
         }
 
-        return Collections.emptyList();
+        return curNodeList;
     }
 
     /**
@@ -516,11 +512,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     public List<Node> visitCondOr(final GrammarParser.CondOrContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.cond(0));
-        curNodeList = initialCurNodeList;
+        curNodeList = new ArrayList<>(initialCurNodeList);
         final List<Node> node1List = visit(ctx.cond(1));
-        if (node0List.isEmpty() || node1List.isEmpty()) {
-            final Node n = doc.createTextNode("true");
-            return new ArrayList<>(Collections.singletonList(n));
+        curNodeList = new ArrayList<>(initialCurNodeList);
+
+        if (!node0List.isEmpty() || !node1List.isEmpty()) {
+            return trueNode;
         } else {
             return Collections.emptyList();
         }
@@ -536,14 +533,14 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     public List<Node> visitCondAnd(final GrammarParser.CondAndContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.cond(0));
-        curNodeList = initialCurNodeList;
+        curNodeList = new ArrayList<>(initialCurNodeList);
         final List<Node> node1List = visit(ctx.cond(1));
-        final List<Node> res = new ArrayList<>();
+        curNodeList = new ArrayList<>(initialCurNodeList);
+
 
         if (!node0List.isEmpty() && !node1List.isEmpty()) {
             // both not empty then true
-            final Node n = doc.createTextNode("true");
-            return new ArrayList<>(Collections.singletonList(n));
+            return trueNode;
         } else {
             return Collections.emptyList();
         }
@@ -569,10 +566,11 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     //unsure about version
     @Override
     public List<Node> visitCondEmpty(final GrammarParser.CondEmptyContext ctx) {
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> res = visit(ctx.xq());
+        curNodeList = initialCurNodeList;
         if (res.isEmpty()) {
-            final Node n = doc.createTextNode("true");
-            return new ArrayList<Node>(Collections.singletonList(n));
+            return trueNode;
         }
         return Collections.emptyList();
     }
@@ -598,18 +596,46 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
 //    }
 
     // unsure
+    // real todo
     @Override
     public List<Node> visitCondSome(final GrammarParser.CondSomeContext ctx) {
-        final HashMap<String, List<Node>> storedMap = new HashMap<>(variableMap);
-        final List<Node> nodes = curNodeList;
-        for (int i = 0; i < ctx.var().size(); ++i) {
-            final String varName = ctx.var(i).getText();
-            variableMap.put(varName, visit(ctx.xq(i)));
+        final List<Node> backup = new ArrayList<>(curNodeList);
+        final boolean flag = visitCondSomeHelper(ctx, 0);
+        curNodeList = backup;
+
+        if (flag) {
+            return trueNode;
         }
-        final List<Node> cond = visit(ctx.cond());
-        variableMap = storedMap;
-        curNodeList = nodes;
-        return cond;
+
+        return Collections.emptyList();
+    }
+
+    private boolean visitCondSomeHelper(final GrammarParser.CondSomeContext ctx, final int k){
+        if (k == ctx.var().size()) {
+            return visit(ctx.cond()).size() != 0;
+        }
+        else {
+            final String key = ctx.var(k).getText();
+            final List<Node> valueList = visit(ctx.xq(k));
+
+            for (final Node node: valueList) {
+                final HashMap<String, List<Node>> backup = new HashMap<>(variableMap);
+
+                final LinkedList<Node> value = new LinkedList<>();
+                value.add(node);
+                variableMap.put(key, value);
+
+                if (k + 1 <= ctx.var().size()) {
+                    if (visitCondSomeHelper(ctx, k + 1)) {
+                        variableMap = backup;
+                        return true;
+                    }
+                }
+                variableMap = backup;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -622,18 +648,18 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     public List<Node> visitCondSame(final GrammarParser.CondSameContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.xq(0));
-        curNodeList = initialCurNodeList;
+        curNodeList = new ArrayList<>(initialCurNodeList);
         final List<Node> node1List = visit(ctx.xq(1));
-
+        curNodeList = initialCurNodeList;
 
         for (final Node node0 : node0List) {
             for (final Node node1 : node1List) {
                 if (node0.isSameNode(node1)) {
-                    final Node n = doc.createTextNode("true");
-                    return new ArrayList<Node>(Collections.singletonList(n));
+                    return trueNode;
                 }
             }
         }
+
         return Collections.emptyList();
     }
 
@@ -645,12 +671,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      */
     @Override
     public List<Node> visitCondNot(final GrammarParser.CondNotContext ctx) {
-        //System.out.println("running revised visitFilterNot");
+        final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> ans = visit(ctx.cond());
+        curNodeList = initialCurNodeList;
 
-        final List<Node> nodeList = visit(ctx.cond());
-        if (nodeList.isEmpty()) {
-            final Node n = doc.createTextNode("true");
-            return new ArrayList<Node>(Collections.singletonList(n));
+        if (ans.size() == 0) {
+            return trueNode;
         } else {
             return Collections.emptyList();
         }
@@ -666,15 +692,15 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
     public List<Node> visitCondEqual(final GrammarParser.CondEqualContext ctx) {
         final List<Node> initialCurNodeList = new ArrayList<>(curNodeList);
         final List<Node> node0List = visit(ctx.xq(0));
-        curNodeList = initialCurNodeList;
+        curNodeList = new ArrayList<>(initialCurNodeList);
         final List<Node> node1List = visit(ctx.xq(1));
+        curNodeList = initialCurNodeList;
 
 
         for (final Node node0 : node0List) {
             for (final Node node1 : node1List) {
                 if (node0.isEqualNode(node1)) {
-                    final Node n = doc.createTextNode("true");
-                    return new ArrayList<Node>(Collections.singletonList(n));
+                    return trueNode;
                 }
             }
         }
