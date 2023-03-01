@@ -252,7 +252,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
         final List<Node> ans = visit(ctx.xq(0));
         curNodeList = new ArrayList<>(storedList);
         ans.addAll(visit(ctx.xq(1)));
-        curNodeList = storedList;
+        curNodeList = new ArrayList<>(storedList);
 
         return ans;
     }
@@ -332,42 +332,35 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * {@link #visitChildren} on {@code ctx}.</p>
      */
     @Override
-    //real todo
     public List<Node> visitXqQuery(final GrammarParser.XqQueryContext ctx) {
-        final List<Node> result = new ArrayList<>();
-        final Map<String, List<Node>> backup = new HashMap<>(variableMap);
+        final Map<String, List<Node>> storedVariableMap = new HashMap<>(variableMap);
+        final List<Node> ans = new ArrayList<>();
+        queryHelper(ctx, ans, 0);
+        variableMap = new HashMap<>(storedVariableMap);
 
-        visitFLWR(ctx, 0, result);
-        variableMap = backup;
-
-        return result;
+        return ans;
     }
 
-    private void visitFLWR(final GrammarParser.XqQueryContext ctx, final int k, final List<Node> result) {
-        if (k == ctx.forClause().var().size()) {
-            if (ctx.letClause() != null) {
-                visit(ctx.letClause());
-            }
+    private void queryHelper(final GrammarParser.XqQueryContext ctx, final List<Node> ans, final int idx) {
+        if (idx == ctx.forClause().var().size()) {
             if (ctx.whereClause() != null && visit(ctx.whereClause()).size() == 0) {
                 return;
             }
-
-            result.addAll(visit(ctx.returnClause()));
+            if (ctx.letClause() != null) {
+                visit(ctx.letClause());
+            }
+            final List<Node> returnedNode = visit(ctx.returnClause());
+            ans.addAll(returnedNode);
             return;
         }
+        final List<Node> forNode = visit(ctx.forClause().xq(idx));
 
-        final String var = ctx.forClause().var(k).getText();
-        final List<Node> bind = visit(ctx.forClause().xq(k));
-
-        for (final Node node : bind) {
-            final Map<String, List<Node>> backup = new HashMap<>(variableMap);
-            final List<Node> single = new ArrayList<>();
-
-            single.add(node);
-            variableMap.put(var, single);
-            visitFLWR(ctx, k + 1, result);
-            variableMap = backup;
-        }
+        forNode.forEach(node -> {
+            final Map<String, List<Node>> storedVariableMap = new HashMap<>(variableMap);
+            variableMap.put(ctx.forClause().var(idx).getText(), Collections.singletonList(node));
+            queryHelper(ctx, ans, idx + 1);
+            variableMap = storedVariableMap;
+        });
     }
 
     /**
@@ -376,26 +369,18 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    //real todo
     @Override
     public List<Node> visitXqtag(final GrammarParser.XqtagContext ctx) {
-        final String startTag = ((GrammarParser.XqBeginTagContext) ctx.beginTag()).ID().getText();
-        final String endTag = ((GrammarParser.XqEndTagContext) ctx.endTag()).ID().getText();
-
-        if (!startTag.equals(endTag)) {
-            throw new RuntimeException("Start tag does not match end tag");
+        final List<Node> ans = new ArrayList<>();
+        final String beginTag = ((GrammarParser.XqBeginTagContext) ctx.beginTag()).ID().getText();
+        final Node ansNode = doc.createElement(beginTag);
+        final List<Node> xqNodes = visit(ctx.xq());
+        for (final Node node : xqNodes) {
+            ansNode.appendChild(doc.importNode(node, true));
         }
+        ans.add(ansNode);
 
-        final Node resultNode = doc.createElement(startTag);
-        for (final Node node : visit(ctx.xq())) {
-            final Node child = doc.importNode(node, true);
-            resultNode.appendChild(child);
-        }
-
-        final List<Node> result = new ArrayList<>();
-        result.add(resultNode);
-
-        return result;
+        return ans;
     }
 
     /**
@@ -454,7 +439,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    //todo
     @Override
     public List<Node> visitForClause(final GrammarParser.ForClauseContext ctx) {
         return curNodeList;
@@ -466,7 +450,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    //todo
     @Override
     public List<Node> visitLetClause(final GrammarParser.LetClauseContext ctx) {
         final int varSize = ctx.var().size();
@@ -484,7 +467,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    //todo
     @Override
     public List<Node> visitWhereClause(final GrammarParser.WhereClauseContext ctx) {
         return visit(ctx.cond());
@@ -496,7 +478,6 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-    //todo
     @Override
     public List<Node> visitReturnClause(final GrammarParser.ReturnClauseContext ctx) {
         return visit(ctx.xq());
@@ -581,61 +562,42 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<List<Node>> {
      * <p>The default implementation returns the result of calling
      * {@link #visitChildren} on {@code ctx}.</p>
      */
-//    @Override public List<Node> visitCondSome(GrammarParser.CondSomeContext ctx) {
-//        HashMap<String, List<Node>> map = new HashMap<>(variableMap);
-//        List<Node> nodes = this.curNodeList;
-//        for (int i = 0; i < ctx.var().size(); ++i) {
-//            String varName = ctx.var(i).getText();
-//            List<Node> xq = visit(ctx.xq(i));
-//            this.variableMap.put(varName, xq);
-//        }
-//        List<Node> cond = visit(ctx.cond());
-//        this.variableMap = map;
-//        this.curNodeList = nodes;
-//        return cond;
-//    }
-
-    // unsure
-    // real todo
     @Override
     public List<Node> visitCondSome(final GrammarParser.CondSomeContext ctx) {
-        final List<Node> backup = new ArrayList<>(curNodeList);
-        final boolean flag = visitCondSomeHelper(ctx, 0);
-        curNodeList = backup;
+        final List<Node> storedCurNodeList = new ArrayList<>(curNodeList);
+        final List<Node> ansNode = someHelper(ctx, 0);
+        curNodeList = new ArrayList<>(storedCurNodeList);
 
-        if (flag) {
-            return trueNode;
-        }
-
-        return Collections.emptyList();
+        return ansNode;
     }
 
-    private boolean visitCondSomeHelper(final GrammarParser.CondSomeContext ctx, final int k){
-        if (k == ctx.var().size()) {
-            return visit(ctx.cond()).size() != 0;
-        }
-        else {
-            final String key = ctx.var(k).getText();
-            final List<Node> valueList = visit(ctx.xq(k));
-
-            for (final Node node: valueList) {
-                final HashMap<String, List<Node>> backup = new HashMap<>(variableMap);
+    private List<Node> someHelper(final GrammarParser.CondSomeContext ctx, final int idx) {
+        if (ctx.var().size() == idx) {
+            final int condSize = visit(ctx.cond()).size();
+            if (condSize != 0) {
+                return trueNode;
+            } else {
+                return Collections.emptyList();
+            }
+        } else {
+            for (final Node node : visit(ctx.xq(idx))) {
+                final HashMap<String, List<Node>> storedVariableMap = new HashMap<>(variableMap);
 
                 final LinkedList<Node> value = new LinkedList<>();
                 value.add(node);
-                variableMap.put(key, value);
+                variableMap.put(ctx.var(idx).getText(), value);
 
-                if (k + 1 <= ctx.var().size()) {
-                    if (visitCondSomeHelper(ctx, k + 1)) {
-                        variableMap = backup;
-                        return true;
+                if (ctx.var().size() >= idx + 1) {
+                    if (someHelper(ctx, idx + 1) == trueNode) {
+                        variableMap = new HashMap<>(storedVariableMap);
+                        return trueNode;
                     }
                 }
-                variableMap = backup;
+                variableMap = new HashMap<>(storedVariableMap);
             }
         }
 
-        return false;
+        return Collections.emptyList();
     }
 
     /**
