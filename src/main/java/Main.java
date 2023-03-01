@@ -30,18 +30,28 @@ public class Main {
         final GrammarLexer grammarLexer = new GrammarLexer(charStream);
         final CommonTokenStream commonTokenStream = new CommonTokenStream(grammarLexer);
         final GrammarParser grammarParser = new GrammarParser(commonTokenStream);
-        final List<Node> ans = new GrammarVisitorImpl().visit(grammarParser.ap());
+        final List<Node> ans = new GrammarVisitorImpl().visit(grammarParser.xq());
 
         final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        document.setXmlStandalone(true);
 
         final Node ansNode = document.createElement("RESULT");
-        for (final Node node : ans) {
-            ansNode.appendChild(document.importNode(node, true));
+        if(ans.size() > 1) {
+            for (final Node node : ans) {
+                if(node != null) {
+                    ansNode.appendChild(document.importNode(node, true));
+                }
+            }
+            document.appendChild(ansNode);
+        } else {
+            final Node root = document.importNode(ans.get(0), true);
+            document.appendChild(root);
         }
-        document.appendChild(ansNode);
+
 
         final Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         transformer.transform(new DOMSource(document), new StreamResult(new FileOutputStream(outputFile)));
     }
